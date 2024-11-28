@@ -18,16 +18,17 @@ def display_map():
     
     # Initialize a map
     map_center = [0, 0] if not species_data else [species_data[0][1], species_data[0][2]]
-    map_obj = folium.Map(location=map_center, zoom_start=2)
+    map_obj = folium.Map(location=map_center, zoom_start=16)
 
     # Add markers for each species
     for species in species_data:
-        name, lat, lon, photo = species
-        popup_content = f"<b>{name}</b><br><img src='{photo}' width='100'>" if photo else f"<b>{name}</b>"
+        name, lat, lon, _ = species
+        popup_content = f"<b>{name}</b>"
         folium.Marker([lat, lon], popup=popup_content).add_to(map_obj)
+        #folium.Marker([lat, lon]).add_to(map_obj)
 
     # Display the map in Streamlit
-    st_folium(map_obj, width=800, height=600)
+    st_folium(map_obj, width=725)
 
 # Call the function in gallery.py
 display_map()
