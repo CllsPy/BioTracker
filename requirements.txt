@@ -2,5 +2,5 @@ streamlit
 pillow
 folium
 streamlit-folium
-streamlit firebase-admin
-
+mysql-connector-python
+pymongo
