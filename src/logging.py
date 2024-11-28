@@ -5,7 +5,6 @@ from db_utils import init_db
 init_db()  # Ensures the database and table are created
 
 import streamlit as st
-from PIL import Image 
 
 with st.form("Cadastro do Animal"):
     st.write("Upload")
@@ -19,6 +18,5 @@ with st.form("Cadastro do Animal"):
     submitted = st.form_submit_button("Submit")
     if submitted:
         st.image(uploaded_img)
-
         add_species(name, date, lon, lat, '/path')
         
