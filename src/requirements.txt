@@ -1,6 +1,3 @@
 streamlit
 pillow
-folium
-streamlit-folium
-mysql-connector-python
-pymongo
+streamlit_leaflet 
