@@ -37,7 +37,7 @@ def display_map():
     map_center = [float(first_species[1]), float(first_species[2])] if first_species else [0, 0]
     
     # Create the folium map
-    map_obj = folium.Map(location=map_center, zoom_start=5)
+    map_obj = folium.Map(location=map_center, zoom_start=12)
 
     # Add markers for each species
     for species in species_data:
