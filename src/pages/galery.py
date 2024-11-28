@@ -1,6 +1,7 @@
 import streamlit as st
 import sqlite3
-from streamlit_leaflet import st_leaflet
+import plotly.express as px
+import pandas as pd
 
 # Função para buscar dados de espécies com localização no banco de dados SQLite
 def fetch_species_with_location():
@@ -21,7 +22,7 @@ def fetch_species_with_location():
         st.error(f"Error connecting to SQLite database: {e}")
         return []
 
-# Função para exibir o mapa com marcadores de espécies
+# Função para exibir o mapa com os marcadores de espécies
 def display_map():
     species_data = fetch_species_with_location()
 
@@ -29,27 +30,20 @@ def display_map():
         st.write("No species data available with location.")
         return
 
-    # Preparando os marcadores para exibição no mapa
-    markers = []
-    for species in species_data:
-        name, lat, lon, _ = species
-        try:
-            lat = float(lat)
-            lon = float(lon)
-            
-            if -90 <= lat <= 90 and -180 <= lon <= 180:
-                markers.append({
-                    "lat": lat,
-                    "lon": lon,
-                    "popup": f"<b>{name}</b>"  # O conteúdo do popup (nome da espécie)
-                })
-            else:
-                st.warning(f"Invalid coordinates for species: {name} (Lat: {lat}, Lon: {lon})")
-        except ValueError:
-            st.warning(f"Invalid latitude or longitude for species: {name} (Lat: {lat}, Lon: {lon})")
+    # Convertendo os dados para um DataFrame do Pandas para usar com Plotly
+    df = pd.DataFrame(species_data, columns=["name", "latitude", "longitude", "image_path"])
 
-    # Exibindo o mapa com os marcadores usando streamlit-leaflet
-    st_leaflet(markers=markers, center=(species_data[0][1], species_data[0][2]), zoom=5)
+    # Criando o mapa interativo com Plotly
+    fig = px.scatter_geo(df, 
+                         lat='latitude', 
+                         lon='longitude', 
+                         hover_name='name', 
+                         title="Espécies no Mapa",
+                         template='plotly',  # Você pode escolher o template que mais gosta
+                         projection="natural earth")  # Você pode escolher outros tipos de projeção
+
+    # Exibindo o mapa interativo no Streamlit
+    st.plotly_chart(fig)
 
 # Chama a função para exibir o mapa com as espécies
 display_map()
