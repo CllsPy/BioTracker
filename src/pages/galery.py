@@ -53,7 +53,7 @@ def display_map():
             st.warning(f"Invalid latitude or longitude for species: {name} (Lat: {lat}, Lon: {lon})")
 
     # Display the map in Streamlit
-    return map_obj
+    return st.map(map_obj)
 
 # Call the function to display the map with species
 display_map()
