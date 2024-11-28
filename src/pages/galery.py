@@ -32,12 +32,9 @@ def display_map():
         st.write("No species data available with location.")
         return
 
-    # Initialize the map with the first species' coordinates
-    first_species = species_data[0]
-    map_center = [float(first_species[1]), float(first_species[2])] if first_species else [0, 0]
     
     # Create the folium map
-    map_obj = folium.Map(location=map_center, zoom_start=12)
+    map_obj = folium.Map(tiles='openstreetmap', zoom_start=12)
 
     # Add markers for each species
     for species in species_data:
@@ -56,7 +53,7 @@ def display_map():
             st.warning(f"Invalid latitude or longitude for species: {name} (Lat: {lat}, Lon: {lon})")
 
     # Display the map in Streamlit
-    st_folium(map_obj)
+    return map_obj
 
 # Call the function to display the map with species
 display_map()
