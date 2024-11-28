@@ -1,8 +1,8 @@
 import streamlit as st
 import sqlite3
-from streamlit_folium import st_folium
-import folium
+from streamlit_leaflet import st_leaflet
 
+# Função para buscar dados de espécies com localização no banco de dados SQLite
 def fetch_species_with_location():
     try:
         with sqlite3.connect('species.db') as conn:
@@ -21,6 +21,7 @@ def fetch_species_with_location():
         st.error(f"Error connecting to SQLite database: {e}")
         return []
 
+# Função para exibir o mapa com marcadores de espécies
 def display_map():
     species_data = fetch_species_with_location()
 
@@ -28,10 +29,8 @@ def display_map():
         st.write("No species data available with location.")
         return
 
-    first_species = species_data[0]
-    map_center = [float(first_species[1]), float(first_species[2])] if first_species else [0, 0]
-    map_obj = folium.Map(location=map_center, zoom_start=5)
-
+    # Preparando os marcadores para exibição no mapa
+    markers = []
     for species in species_data:
         name, lat, lon, _ = species
         try:
@@ -39,18 +38,18 @@ def display_map():
             lon = float(lon)
             
             if -90 <= lat <= 90 and -180 <= lon <= 180:
-                popup_content = f"<b>{name}</b>"
-                folium.Marker([lat, lon], popup=popup_content).add_to(map_obj)
+                markers.append({
+                    "lat": lat,
+                    "lon": lon,
+                    "popup": f"<b>{name}</b>"  # O conteúdo do popup (nome da espécie)
+                })
             else:
                 st.warning(f"Invalid coordinates for species: {name} (Lat: {lat}, Lon: {lon})")
         except ValueError:
             st.warning(f"Invalid latitude or longitude for species: {name} (Lat: {lat}, Lon: {lon})")
 
-    # Display the map in Streamlit
-    st_folium(map_obj, width=725)
+    # Exibindo o mapa com os marcadores usando streamlit-leaflet
+    st_leaflet(markers=markers, center=(species_data[0][1], species_data[0][2]), zoom=5)
 
-    # Force a rerun to ensure the map is rendered properly
-    st.experimental_rerun()
-
-# Call the function to display the map with species
+# Chama a função para exibir o mapa com as espécies
 display_map()
