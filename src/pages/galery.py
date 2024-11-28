@@ -48,15 +48,15 @@ def display_map():
             
             # Validate coordinates: latitude between -90 and 90, longitude between -180 and 180
             if -90 <= lat <= 90 and -180 <= lon <= 180:
-                popup_content = f"<b>{name}</b>"
-                folium.Marker([lat, lon], popup=popup_content).add_to(map_obj)
+                #popup_content = f"<b>{name}</b>"
+                folium.Marker([lat, lon]).add_to(map_obj)
             else:
                 st.warning(f"Invalid coordinates for species: {name} (Lat: {lat}, Lon: {lon})")
         except ValueError:
             st.warning(f"Invalid latitude or longitude for species: {name} (Lat: {lat}, Lon: {lon})")
 
     # Display the map in Streamlit
-    st_folium(map_obj, width=725)
+    st_folium(map_obj)
 
 # Call the function to display the map with species
 display_map()
