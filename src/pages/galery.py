@@ -6,20 +6,20 @@ import folium
 # Function to fetch species with location from SQLite database
 def fetch_species_with_location():
     try:
-        # Establish connection to SQLite DB
-        conn = sqlite3.connect('species.db')  # Ensure you use the correct path for the SQLite DB
-        cursor = conn.cursor()
+        # Establish connection to SQLite DB using a context manager for auto-close
+        with sqlite3.connect('species.db') as conn:
+            cursor = conn.cursor()
 
-        # SQL query to fetch species with non-null latitude and longitude
-        cursor.execute("""
-            SELECT name, latitude, longitude, image_path 
-            FROM species 
-            WHERE latitude IS NOT NULL AND longitude IS NOT NULL
-        """)
-        records = cursor.fetchall()
-        cursor.close()
-        conn.close()
+            # SQL query to fetch species with non-null latitude and longitude
+            cursor.execute("""
+                SELECT name, latitude, longitude, image_path 
+                FROM species 
+                WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+            """)
+            records = cursor.fetchall()
+
         return records
+
     except sqlite3.Error as e:
         st.error(f"Error connecting to SQLite database: {e}")
         return []
@@ -33,14 +33,27 @@ def display_map():
         return
 
     # Initialize the map with the first species' coordinates
-    map_center = [float(species_data[0][1]), float(species_data[0][2])] if species_data else [0, 0]
+    first_species = species_data[0]
+    map_center = [float(first_species[1]), float(first_species[2])] if first_species else [0, 0]
+    
+    # Create the folium map
     map_obj = folium.Map(location=map_center, zoom_start=5)
 
     # Add markers for each species
     for species in species_data:
         name, lat, lon, _ = species
-        popup_content = f"<b>{name}</b>"
-        folium.Marker([float(lat), float(lon)], popup=popup_content).add_to(map_obj)
+        try:
+            lat = float(lat)
+            lon = float(lon)
+            
+            # Validate coordinates: latitude between -90 and 90, longitude between -180 and 180
+            if -90 <= lat <= 90 and -180 <= lon <= 180:
+                popup_content = f"<b>{name}</b>"
+                folium.Marker([lat, lon], popup=popup_content).add_to(map_obj)
+            else:
+                st.warning(f"Invalid coordinates for species: {name} (Lat: {lat}, Lon: {lon})")
+        except ValueError:
+            st.warning(f"Invalid latitude or longitude for species: {name} (Lat: {lat}, Lon: {lon})")
 
     # Display the map in Streamlit
     st_folium(map_obj, width=725)
