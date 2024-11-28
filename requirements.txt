@@ -2,3 +2,4 @@ streamlit
 pillow
 folium
 streamlit-folium
+install pysqlite3 
