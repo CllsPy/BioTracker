@@ -2,7 +2,7 @@ import sqlite3
 
 # Create or connect to the database
 def init_db():
-    conn = sqlite3.connect("data/species.db")
+    conn = sqlite3.connect("data//species.db")
     cursor = conn.cursor()
 
     # Create table if not exists
