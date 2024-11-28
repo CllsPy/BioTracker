@@ -1,5 +1,5 @@
 import sqlite3
-import data
+from data import *
 
 # Create or connect to the database
 def init_db():
