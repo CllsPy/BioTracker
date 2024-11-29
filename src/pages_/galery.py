@@ -21,7 +21,10 @@ def display_map():
     fig = px.scatter_map(df,
                          lat='latitude', 
                          lon='longitude', 
-                         hover_name='name')  # Você pode escolher outros tipos de projeção
+                         hover_name='name') 
+    
+    fig.update_layout(map_style="open-street-map")
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
     # Exibindo o mapa interativo no Streamlit
     st.plotly_chart(fig)
