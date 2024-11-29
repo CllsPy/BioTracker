@@ -23,7 +23,7 @@ def display_map():
                          lon='longitude', 
                          hover_name='name', 
                          template='plotly',  # Você pode escolher o template que mais gosta
-                         projection="mercator")  # Você pode escolher outros tipos de projeção
+                         color="name")  # Você pode escolher outros tipos de projeção
 
     # Exibindo o mapa interativo no Streamlit
     st.plotly_chart(fig)
