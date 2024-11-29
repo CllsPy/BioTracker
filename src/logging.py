@@ -13,8 +13,8 @@ def main():
         '', ['Main', 'Map']
         )
     pages_main = {
-        'Main_': main_page,
-        'Galaery_': galery,
+        'Main': main_page,
+        'Galery': galery,
 
     }
 
