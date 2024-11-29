@@ -9,7 +9,7 @@ from pages_.galery import display_map
 
 def main():
     st.sidebar.title('Navbar')
-    page_selection = st.sidebar.radio(
+    page_selection = st.sidebar.selectbox(
         'Pages', ['Main', 'Map']
         )
 
@@ -52,6 +52,5 @@ def main_page():
 def galery():
     return display_map()
 
-main()
 if __name__=='__main__':
     main()
