@@ -18,12 +18,10 @@ def display_map():
     df = pd.DataFrame(species_data, columns=["name", "latitude", "longitude", "image_path"])
 
     # Criando o mapa interativo com Plotly
-    fig = px.scatter_geo(df,
+    fig = px.scatter_map(df,
                          lat='latitude', 
                          lon='longitude', 
-                         hover_name='name', 
-                         template='plotly',  # Você pode escolher o template que mais gosta
-                         projection="natural earth")  # Você pode escolher outros tipos de projeção
+                         hover_name='name')  # Você pode escolher outros tipos de projeção
 
     # Exibindo o mapa interativo no Streamlit
     st.plotly_chart(fig)
