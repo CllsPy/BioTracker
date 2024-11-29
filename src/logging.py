@@ -10,11 +10,11 @@ from pages_.galery import display_map
 def main():
     st.sidebar.title('Navbar')
     page_selection = st.sidebar.selectbox(
-        '', ['Main', 'Map']
+        'Pages', ['Main', 'Map']
         )
     pages_main = {
         'Main': main_page,
-        'Galery': galery,
+        'Map': galery,
 
     }
 
