@@ -51,5 +51,6 @@ def main_page():
 def galery():
     return display_map()
 
+main()
 if __name__=='__main__':
     main()
