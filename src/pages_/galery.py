@@ -17,14 +17,13 @@ def display_map():
     # Convertendo os dados para um DataFrame do Pandas para usar com Plotly
     df = pd.DataFrame(species_data, columns=["name", "latitude", "longitude", "image_path"])
 
-    # Criando o mapa interativo com Plotly
-    fig = px.scatter_map(df,
+       # Criando o mapa interativo com Plotly
+    fig = px.scatter_geo(df,
                          lat='latitude', 
                          lon='longitude', 
-                         hover_name='name') 
-    
-    fig.update_layout(map_style="open-street-map")
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+                         hover_name='name', 
+                         template='plotly',  # Você pode escolher o template que mais gosta
+                         projection="mercator")  # Você pode escolher outros tipos de projeção
 
     # Exibindo o mapa interativo no Streamlit
     st.plotly_chart(fig)
