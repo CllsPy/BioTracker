@@ -25,16 +25,29 @@ def main():
 def main_page():
     init_db()  # Ensures the database and table are created
 
-    with st.form("Cadastro do Animal"):
-        st.write("Upload")
-        uploaded_img = st.file_uploader('Image')
+    with st.form("Report"):
+        #st.write("Upload")
+        st.subheader('Cadastro do Animal')
+        uploaded_img = st.file_uploader('Picture')
 
-        name = st.text_input('Nome do Animal')
+        name = st.selectbox(
+            'Specie', 
+            [
+                'Panthera onca', 
+                'Chrysocyon brachyurus', 
+                'Ailuropoda melanoleuca',
+                'Balaenoptera physalus'
+                ]
+            )
+
         date = st.date_input("Date", datetime.date(2024, 11, 29))
-        lon = st.text_input('longitude')
-        lat = st.text_input('latitude')
 
-        submitted = st.form_submit_button("Submit")
+        col1, col2 = st.columns(2)
+
+        lat = col1.text_input('latitude')
+        lon = col2.text_input('longitude')
+
+        submitted = st.form_submit_button("Report")
         if submitted:
             st.image(uploaded_img)
 
